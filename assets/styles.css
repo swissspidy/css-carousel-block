@@ -1,0 +1,89 @@
+.wp-block-gallery.has-nested-images.is-display-type-carousel {
+
+	/* to display all images in a single row */
+	display: grid;
+	grid-auto-flow: column;
+	grid-auto-columns: 100%;
+	align-items: unset;
+	justify-content: unset;
+
+	/* for the horizontal scrolling */
+	overflow-x: auto;
+	scroll-behavior: smooth;
+	overscroll-behavior-x: contain;
+	scrollbar-width: none;
+	scroll-snap-type: x mandatory;
+
+	anchor-name: --carousel;
+
+	& + * {
+		margin-top: 40px;
+	}
+
+	> .wp-block-image {
+		scroll-snap-align: center;
+		display: inline-grid;
+		width: auto !important;
+		height: 20rem;
+	}
+
+	/* for the left/right arrows, which are actually siblings of the carousel */
+	&::scroll-button(*) {
+		position: fixed;
+		position-anchor: --carousel;
+		display: block;
+		width: 2rem;
+		aspect-ratio: 1;
+		border: none;
+		background: transparent;
+		cursor: pointer;
+		font-size: 1.5rem;
+	}
+
+	&::scroll-button(inline-start) {
+		position-area: inline-start center;
+		content: "⬅️" / attr(data-previous);
+	}
+
+	&::scroll-button(inline-end) {
+		position-area: inline-end center;
+		content: "➡️" / attr(data-next);
+	}
+
+	[dir="rtl"]	&::scroll-button(inline-start) {
+		content: "➡️" / attr(data-next);
+	}
+
+	[dir="rtl"] &::scroll-button(inline-end) {
+		content: "⬅️" / attr(data-previous);
+	}
+
+	&::scroll-button(*):disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	scroll-marker-group: after;
+
+	/* Note: this is actually a sibling of the carousel */
+	&::scroll-marker-group {
+		display: grid;
+		grid-auto-columns: 20px;
+		grid-auto-flow: column;
+		gap: 20px;
+		justify-content: center;
+	}
+
+	/* This will add one dot for each item within the scroll marker group */
+	> figure::scroll-marker {
+		content: "⭕";
+		cursor: pointer;
+		aspect-ratio: 1;
+		border: none;
+		text-decoration: none;
+	}
+
+	> figure::scroll-marker:target-current {
+		content: "🔴";
+	}
+}
